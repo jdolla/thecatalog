@@ -1,22 +1,28 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const app = express();
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(bodyParser.json());
 
-// Put all API endpoints under '/api'
-app.get('/api/passwords', (req, res) => {
-    res.json([
-        {password: "nachomamma"},
-        {password: "alsonachomomma"}
-    ])
-});
+const mongoConn = process.env.mongodb || "mongodb://localhost/thecatalog";
+mongoose.connect(mongoConn);
 
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
+// Middleware:  Auth Stuff
+
+const { userRouter} = require('./routes/userRoute')
+// Route Endpoints
+app.use('/api/user', userRouter)
+
+
+// Middleware: Error Handling
+
+
+//Catchall
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
@@ -24,4 +30,4 @@ app.get('*', (req, res) => {
 const port = process.env.PORT || 5000;
 app.listen(port);
 
-console.log(`Listening on ${port}`);
+console.log(`listening on ${port}`);

@@ -9,9 +9,10 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Put all API endpoints under '/api'
 app.get('/api/passwords', (req, res) => {
-    res.json({
-        password: "nachomamma",
-    })
+    res.json([
+        {password: "nachomamma"},
+        {password: "alsonachomomma"}
+    ])
 });
 
 // The "catchall" handler: for any request that doesn't

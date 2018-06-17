@@ -76,10 +76,6 @@ const logout = (req, res, next) => {
     res.status(200).send()
 }
 
-const resetPassword = (req, res, next) => {
-    res.send('not implemented yet')
-}
-
 const updatePassword = (req, res, next) => {
     const { id:authId, user_roles:authRoles } = req.userInfo
     const { id, password, new_password, new_password_conf } = req.body
@@ -135,7 +131,6 @@ const saveNewPassword = async (id, newPassword) => {
         })
     return saved;
 }
-
 
 // middleware for adding auth info to req
 const getAuth = (req, res, next) => {

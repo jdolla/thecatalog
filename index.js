@@ -12,15 +12,22 @@ app.use(bodyParser.json());
 const mongoConn = process.env.mongodb || "mongodb://localhost/thecatalog";
 mongoose.connect(mongoConn);
 
-// Middleware:  Auth Stuff
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
-const { userRouter} = require('./routes/userRoute')
+
+// pre-run middleware
+const { getAuth } = require('./controllers/userController')
+app.use(getAuth)
+
 // Route Endpoints
+const { userRouter} = require('./routes/userRoute')
 app.use('/api/user', userRouter)
 
 
 // Middleware: Error Handling
-
+const { logError } = require('./controllers/errorController')
+app.use(logError)
 
 //Catchall
 app.get('*', (req, res) => {

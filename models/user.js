@@ -1,19 +1,8 @@
 'use strict';
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const { tknOpt, hashOpt } = require('../config/config');
 const {roles} = require('../helpers/dictionaries');
-
-const RoleSchema = new mongoose.Schema({
-  name: {
-      type: String,
-      require: true,
-      validate: {
-          validator: val => {
-              return roles.includes(val);
-          },
-          message: "{VALUE} is not a valid user role."
-      }
-  }
-});
 
 const UserSchema = new mongoose.Schema({
   email: {
@@ -46,7 +35,45 @@ const UserSchema = new mongoose.Schema({
       }
     }
   },
-  user_roles: [RoleSchema]
+  user_roles: {
+    type: Array,
+    required: true,
+    validate: arr => {
+      if(arr.length === 0){
+        return false;
+      }
+      return arr.every(elem => roles.hasOwnProperty(elem))
+    }
+  }
 });
+
+UserSchema.query.byEmail = function(email) {
+  return this.where({email});
+}
+
+UserSchema.query.byId = function(id) {
+  return this.where({_id: id});
+}
+
+UserSchema.pre('save', async function(){
+  const user = this
+  const { saltRounds } = hashOpt
+  const hash = await bcrypt.hash(user.password, saltRounds);
+  user.password = hash;
+})
+
+UserSchema.statics.authById = async function(id, password){
+  const user = await this.findOne().byId(id);
+  const match = await bcrypt.compare(password, user.password);
+  return (match) ? { id: user.id, roles: user.user_roles } : null;
+}
+
+UserSchema.statics.authByEmail = async function(email, password){
+  const user = await this.findOne().byEmail(email);
+  const match = await bcrypt.compare(password, user.password);
+  return (match) ? { id: user.id, roles: user.user_roles } : null;
+}
+
+
 
 module.exports = mongoose.model('User', UserSchema);

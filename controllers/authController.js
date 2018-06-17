@@ -12,7 +12,6 @@ exports.setAuthCookie = (res, token) => {
   return res.cookie('seahorse', token, cookieOptions);
 };
 
-
 exports.getToken = (userId, firstName) => {
   const payload = {
     id: userId,

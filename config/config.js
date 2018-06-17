@@ -22,14 +22,21 @@ const tknOpt = {
     private: getPrivate(),
     public: getPublic(),
   },
-  expireTime: 1800,
+  expireTime: 3600,
 };
 
 const hashOpt = {
   saltRounds: 8,
 };
 
+const cookieOpt = {
+  maxAge: 3600000,
+  secure: false,
+  httpOnly: true,
+}
+
 module.exports = {
   tknOpt,
   hashOpt,
+  cookieOpt
 };

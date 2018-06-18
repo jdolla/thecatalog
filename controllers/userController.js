@@ -176,7 +176,47 @@ const requireAuth = (req, res, next) => {
 }
 
 const getAllUsers = (req, res, next) => {
+    const user_roles = req.userInfo.user_roles;
+    if(!user_roles.includes(roles.admin.name)){
+        return next(createError(401))
+    }
 
+    const qry = req.query
+    const page = (qry.page) ? parseInt(qry.page) : 1
+    const items = (qry.items) ? parseInt(qry.items) : 10
+    const sortBy = (qry.sortBy) ? qry.sortBy : 'email'
+    const sortDir = (qry.sortDir) ? parseInt(qry.sortDir) : 1
+
+    const offset = items * (page - 1);
+
+    const sortObj = {};
+    sortObj[sortBy] = sortDir;
+
+    const fields = {
+        email: true,
+        first_name: true,
+        last_name: true,
+        createdAt: true,
+        updatedAt: true,
+        status: true,
+        user_roles: true,
+    }
+
+    const query = User.find(undefined, fields)
+        .sort(sortObj).skip(offset).limit(items)
+
+    query.exec().then(users => {
+        User.count().then(totalUsers => {
+            const totalPages = Math.round(totalUsers/items);
+            const currentPage = (users.length === 0) ? 0 : page;
+            const pagesInfo = { totalUsers, totalPages, currentPage};
+            return res.json({pagesInfo, users});
+        }).catch(err => {
+            return next(createError(500, undefined, err));
+        })
+    }).catch(err => {
+        return next(createError(500, undefined, err));
+    })
 }
 
 module.exports = {
@@ -186,4 +226,5 @@ module.exports = {
     logout,
     getAuth,
     requireAuth,
+    getAllUsers,
 }

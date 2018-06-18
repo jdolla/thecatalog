@@ -45,9 +45,8 @@ const UserSchema = new mongoose.Schema({
       return arr.every(elem => roles.hasOwnProperty(elem))
     }
   }
-});
+}, { timestamps: true });
 
-UserSchema.set({timestamps:true})
 
 UserSchema.query.byEmail = function(email) {
   return this.where({email});
@@ -67,7 +66,9 @@ UserSchema.pre('save', async function(){
 UserSchema.statics.authById = async function(id, password){
   const user = await this.findOne().byId(id);
   const match = await bcrypt.compare(password, user.password);
-  return (match) ? { id: user.id, roles: user.user_roles } : null;
+
+  return (match && user.status === 'active')
+    ? { id: user.id, roles: user.user_roles } : null;
 }
 
 UserSchema.statics.authByEmail = async function(email, password){

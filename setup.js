@@ -16,10 +16,25 @@ const defaultAdmin = {
 
 const CreateDefaultAdmin = async defaultAdmin => {
     try {
-        const admin = await User.create(defaultAdmin);
-        console.log(`Default admin account created: ${ defaultAdmin.email }`)
-        console.log(`Password set to configured default.`)
-        console.log(`Be sure to change the default password NOW.`)
+        const user = await User.findOne().byEmail(defaultAdmin.email)
+        if(!user){
+            const admin = await User.create(defaultAdmin);
+            console.log(`
+                \n${'*'.repeat(100)}
+
+                Default admin account created: ${ defaultAdmin.email }
+
+                To ensure security follow these steps:
+                    1. Change the password from the configured default.
+                    2. Create a new admin user.
+                    3. Deactivate the default admin user.
+
+                \n${'*'.repeat(100)}
+            `)
+        } else {
+            console.log('Default admin already exists.')
+        }
+
     } catch (error) {
         console.log(error);
     } finally {

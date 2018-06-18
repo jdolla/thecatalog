@@ -175,6 +175,10 @@ const requireAuth = (req, res, next) => {
     return next()
 }
 
+const getAllUsers = (req, res, next) => {
+
+}
+
 module.exports = {
     createUser,
     updatePassword,

@@ -47,6 +47,8 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
+UserSchema.set({timestamps:true})
+
 UserSchema.query.byEmail = function(email) {
   return this.where({email});
 }

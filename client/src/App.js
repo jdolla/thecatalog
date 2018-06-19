@@ -1,35 +1,23 @@
 import React, { Component } from 'react';
 import './App.css';
+import Header from './components/header/header';
+import { BrowserRouter, Switch } from 'react-router-dom';
+import Login from './components/login/login';
+import Route from 'react-router-dom/Route';
 
 class App extends Component {
-  state = { passwords: [] }
-
-  // Fetch passwords after first mount
-  componentDidMount() {
-    this.getPasswords();
-  }
-  getPasswords = () => {
-    // Get the passwords and store them in state
-    fetch('/api/passwords')
-      .then(res => res.json())
-      .then(passwords => {
-        console.log(passwords)
-        this.setState({ passwords })
-      });
-  }
-
-  render() {
-    const { passwords } = this.state;
-    return (
-      <div className="App">
-        {passwords.map((p, i) => {
-          return (
-            <div key={i}>{p.password}</div>
-          )
-        })}
-      </div>
-    );
-  }
+    render() {
+        return (
+            <BrowserRouter>
+                <div className="App">
+                    <Header />
+                    <Switch>
+                        <Route exact path='/' component={Login}/>
+                    </Switch>
+                </div>
+            </BrowserRouter>
+        )
+    }
 }
 
 export default App;

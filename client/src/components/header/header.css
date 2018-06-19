@@ -1,0 +1,16 @@
+.Header {
+    background-color: #1f1e1e;
+    display: grid;
+    text-align: center;
+    padding: 10px;
+    align-content: center;
+    color: #ece1e1;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.nav {
+    text-align: right;
+}

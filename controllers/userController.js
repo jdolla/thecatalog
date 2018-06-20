@@ -63,12 +63,11 @@ const login = (req, res, next) => {
             );
 
             res.cookie('thecatalog', cookieVal, cookieOpt);
-            return res.status(200).json();
+            return res.status(200).json({first_name: data.first_name});
         })
         .catch( err => {
             return next(createError(500, undefined, err));
         })
-
 }
 
 const logout = (req, res, next) => {

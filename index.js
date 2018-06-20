@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const { mongoConn } = require('./config/config.js')
 
 const app = express();
 
@@ -9,7 +10,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(bodyParser.json());
 
-const mongoConn = process.env.mongodb || "mongodb://localhost/thecatalog";
+
 mongoose.connect(mongoConn);
 
 const cookieParser = require('cookie-parser');

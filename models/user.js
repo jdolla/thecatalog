@@ -66,15 +66,20 @@ UserSchema.pre('save', async function(){
 UserSchema.statics.authById = async function(id, password){
   const user = await this.findOne().byId(id);
   const match = await bcrypt.compare(password, user.password);
-
+  if (!user) {
+    return null;
+  }
   return (match && user.status === 'active')
-    ? { id: user.id, roles: user.user_roles } : null;
+    ? { id: user.id, roles: user.user_roles, first_name: user.first_name } : null;
 }
 
 UserSchema.statics.authByEmail = async function(email, password){
   const user = await this.findOne().byEmail(email);
+  if (!user){
+    return null;
+  }
   const match = await bcrypt.compare(password, user.password);
-  return (match) ? { id: user.id, roles: user.user_roles } : null;
+  return (match) ? { id: user.id, roles: user.user_roles, first_name: user.first_name } : null;
 }
 
 

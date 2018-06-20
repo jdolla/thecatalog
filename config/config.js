@@ -35,8 +35,11 @@ const cookieOpt = {
   httpOnly: true,
 }
 
+const mongoConn = process.env.mongodb || "mongodb://localhost/thecatalog";
+
 module.exports = {
   tknOpt,
   hashOpt,
-  cookieOpt
+  cookieOpt,
+  mongoConn
 };

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import Header from './components/header/header';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import Login from './components/login/login';
-import Route from 'react-router-dom/Route';
+import OfferList from './components/offerlist/offerlist';
 
 class App extends Component {
     render() {
@@ -13,6 +13,7 @@ class App extends Component {
                     <Header />
                     <Switch>
                         <Route exact path='/' component={Login}/>
+                        <Route exact path="/offers" component={OfferList}/>
                     </Switch>
                 </div>
             </BrowserRouter>

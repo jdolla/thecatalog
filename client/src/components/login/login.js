@@ -30,12 +30,16 @@ class Login extends Component{
                     this.setState({
                         first_name: resp.first_name,
                         authenticated: true,
-                    })
+                    });
+                    this.props.history.push('/offers');
+
                     break;
                 case 401:
                     this.setState({
                         shake: true,
-                        errorMessage: "invalid username or password"
+                        errorMessage: "invalid username or password",
+                        first_name: "",
+                        authenticated: false,
                     })
                     break;
                 default:

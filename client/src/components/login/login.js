@@ -3,8 +3,6 @@ import './login.css';
 
 class Login extends Component{
     state = {
-        first_name: "",
-        authenticated: false,
         email: "",
         password: "",
         shake: false,
@@ -25,28 +23,21 @@ class Login extends Component{
             },
             method: 'POST',
         }).then( resp => {
-            switch (resp.status) {
-                case 200:
-                    this.setState({
-                        first_name: resp.first_name,
-                        authenticated: true,
-                    });
-                    this.props.history.push('/offers');
-
-                    break;
-                case 401:
-                    this.setState({
-                        shake: true,
-                        errorMessage: "invalid username or password",
-                        first_name: "",
-                        authenticated: false,
-                    })
-                    break;
-                default:
-                    break;
+            if(!resp.ok){
+                throw Error(resp.status);
             }
-            console.log(resp);
-
+            return resp.json();
+        }).then( data => {
+            this.props.handleLogin(data, () => {
+                this.props.history.push('/')
+            });
+        }).catch( err => {
+            this.setState({
+                shake: true,
+                errorMessage: "invalid username or password",
+                first_name: "",
+                authenticated: false,
+            })
         })
     }
 

@@ -29,9 +29,10 @@ class Login extends Component{
             return resp.json();
         }).then( data => {
             this.props.handleLogin(data, () => {
-                this.props.history.push('/')
+                this.props.history.push(this.props.backTo);
             });
         }).catch( err => {
+            console.log(err)
             this.setState({
                 shake: true,
                 errorMessage: "invalid username or password",

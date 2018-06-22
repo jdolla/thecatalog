@@ -1,16 +1,32 @@
+.Header * {
+    box-sizing: border-box;
+}
+
 .Header {
     background-color: #1f1e1e;
     display: grid;
+    grid-template-columns: 33.33% 33.33% 33.33%;
     text-align: center;
     padding: 10px;
     align-content: center;
     color: #ece1e1;
+    align-content: center;
 }
 
 .title {
     font-weight: bold;
+    text-align: center;
 }
 
 .nav {
     text-align: right;
+}
+
+.header-logobox {
+    text-align: left;
+}
+
+.header-logo-text {
+    width: 25px;
+    opacity: .85;
 }

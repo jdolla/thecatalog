@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
-import './userlist.css';
+import './errorpage.css';
 
-class UserList extends Component{
+class ErrorPage extends Component{
     render(){
         return(
             <div>
-                User List
+                <p>where am i</p>
             </div>
         )
     }
 }
 
-export default UserList;
+export default ErrorPage;

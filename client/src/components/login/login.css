@@ -70,6 +70,16 @@
     font-size: 12px;
 }
 
+.login-logo {
+    text-align: center;
+    margin-top: 25px;
+    opacity: .5;
+}
+
+.login-logo img {
+    max-width: 500px;
+}
+
 .shake {
     /* Start the shake animation and make the animation last for 0.5 seconds */
     animation: shake 0.5s;

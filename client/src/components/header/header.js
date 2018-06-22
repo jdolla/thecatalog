@@ -10,6 +10,7 @@ class Header extends Component{
                 <div className="header-logobox">
                 </div>
                 <div className="title">
+                    Goat Squirt
                 </div>
                 <div className="nav">
                     <Link to="/">Home</Link>

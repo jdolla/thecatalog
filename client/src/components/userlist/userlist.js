@@ -1,12 +1,25 @@
 import React, {Component} from 'react';
-import ReactTable from 'react-table'
+// import ReactTable from 'react-table'
 import './userlist.css';
-
+import ErrorPage from '../errorpage/errorpage';
+import NotAuthorized from '../notauthorized/notauthorized';
 
 class UserList extends Component{
 
-    getUserList = () => {
-        fetch("/api/user?page=1&items=20&sortBy=first_name&sortDir=-1", {
+    state = {
+      userdata: {},
+      pagedata: {},
+    }
+
+    getUserList = (page, items, sortBy, sortDir) => {
+        const queryParms = [
+          `page=${page || 1}`,
+          `items=${items || 10}`,
+          `sortBy=${sortBy || "first_name"}`,
+          `sortDir=${sortDir || -1}`
+        ];
+
+        fetch(`/api/user?${queryParms.join("&")}`, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -15,46 +28,37 @@ class UserList extends Component{
                 'Cache': 'no-cache'
               },
         }).then( resp => {
-            console.log(resp)
+            if(!resp.ok){
+              throw Error(resp.status);
+            }
             return resp.json();
         }).then( data => {
-            console.log(data);
+          this.setState({
+            userdata: data.users,
+            pagedata: data.pagesInfo,
+          })
+        }).catch(err => {
+          this.setState({
+            error: err,
+          })
         })
     }
 
+    componentDidMount = () => {
+      this.getUserList();
+    }
+
     render(){
-        this.getUserList();
-        const data = [{
-            name: 'Tanner Linsley',
-            age: 26,
-            friend: {
-              name: 'Jason Maurer',
-              age: 23,
-            }
-          }]
-
-          const columns = [{
-            Header: 'Name',
-            accessor: 'name' // String-based value accessors!
-          }, {
-            Header: 'Age',
-            accessor: 'age',
-            Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
-          }, {
-            id: 'friendName', // Required because our accessor is not a string
-            Header: 'Friend Name',
-            accessor: d => d.friend.name // Custom value accessors!
-          }, {
-            Header: props => <span>Friend Age</span>, // Custom header components!
-            accessor: 'friend.age'
-          }]
-
-        return(
-            <ReactTable
-            data={data}
-            columns={columns}
-          />
+      if(this.state.error){
+        if (this.state.error.message.includes("401")){
+          return <NotAuthorized/>
+        }
+        return <ErrorPage/>
+      } else {
+        return (
+          <div>Show Real Stuff Here</div>
         )
+      }
     }
 }
 

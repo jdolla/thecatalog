@@ -5,7 +5,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './components/login/login';
 import OfferList from './components/offerlist/offerlist';
 import UserList from './components/userlist/userlist';
-import ErrorPage from './components/errorpage/errorpage';
+import NotFound from './components/notfound/notfound';
 
 class App extends Component {
     state = {
@@ -85,7 +85,7 @@ class App extends Component {
                     break;
 
                 default:
-                    goTo = (<ErrorPage {...props} />);
+                    goTo = (<NotFound {...props} />);
                     break;
             }
             return(goTo);
@@ -106,7 +106,7 @@ class App extends Component {
                         <Route exact path="/" render={this.secureRoute}/>
                         <Route exact path="/users" render={this.secureRoute}/>
                         <Route exact path="/login" render={this.secureRoute} />
-                        <Route component={ErrorPage} />
+                        <Route component={NotFound} />
                     </Switch>
                 </div>
             </BrowserRouter>

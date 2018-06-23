@@ -79,7 +79,8 @@ const login = (req, res, next) => {
 }
 
 const logout = (req, res, next) => {
-    res.clearCookie('thecatalog', cookieOpt)
+    res.clearCookie('thecatalog', cookieOpt);
+    res.clearCookie('thecatalog-info', { maxAge: 3599999 });
     res.status(200).send()
 }
 

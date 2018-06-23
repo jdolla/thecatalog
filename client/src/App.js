@@ -23,12 +23,24 @@ class App extends Component {
         }, cb)
     }
 
-    handleLogout = () => {
-        this.setState({
-            first_name: "",
-            isAuthenticated: false,
-            isAdmin: false,
-            isCreator: false,
+    handleLogout = (cb) => {
+        fetch("/api/user/logout", {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Cache': 'no-cache'
+              },
+        }).catch(err => {
+            console.log(err);
+        }).finally(() => {
+            this.setState({
+                first_name: "",
+                isAuthenticated: false,
+                isAdmin: false,
+                isCreator: false,
+            }, cb)
         })
     }
 
@@ -38,13 +50,17 @@ class App extends Component {
             cookies.forEach(cookie => {
                 if(cookie.includes('thecatalog-info')){
                     const parts = cookie.split('=');
-                    const info = JSON.parse(parts[1]);
-                    return this.setState({
-                        first_name: info.first_name,
-                        isAdmin: info.isAdmin,
-                        isAuthenticated: true,
-                        isReader: info.isReader,
-                    })
+                    try {
+                        const info = JSON.parse(parts[1]);
+                        return this.setState({
+                            first_name: info.first_name,
+                            isAdmin: info.isAdmin,
+                            isAuthenticated: true,
+                            isReader: info.isReader,
+                        })
+                    } catch (error) {
+                        return;
+                    }
                 }
             });
         }
@@ -76,13 +92,6 @@ class App extends Component {
         }
     }
 
-    handleRouteChange = () => {
-        console.log('here');
-        this.setState({
-            activeNav: "bob"
-        })
-    }
-
     render() {
         return (
             <BrowserRouter>
@@ -91,7 +100,7 @@ class App extends Component {
                         isAuthenticated={this.state.isAuthenticated}
                         first_name={this.state.first_name}
                         isAdmin={this.state.isAdmin}
-                        logoutHandler={this.logoutHandler}
+                        handleLogout={this.handleLogout}
                         activeNav={this.state.activeNav}/>
                     <Switch>
                         <Route exact path="/" render={this.secureRoute}/>

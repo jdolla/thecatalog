@@ -4,8 +4,12 @@ import './header.css';
 
 
 class Header extends Component{
+    logoutClickHandler = () => {
+        this.props.handleLogout(() => {
+            console.log('hi')
+        })
+    }
     render(){
-        const nav = this.props.activeNav;
         return(
             <div className="Header">
                 <div className="header-logobox">
@@ -14,9 +18,9 @@ class Header extends Component{
                     Goat Squirt
                 </div>
                 <div className="nav">
-                    <Link to="/" className={nav === 'home'}>Home</Link>
+                    <Link to="/">Home</Link>
                     <Link to="/users">Users</Link>
-                    <a href="#">Logout</a>
+                    <a href="/" onClick={this.logoutClickHandler}>Logout</a>
                 </div>
             </div>
         )

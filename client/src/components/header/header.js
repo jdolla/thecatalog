@@ -15,7 +15,7 @@ class Header extends Component{
                 <div className="header-logobox">
                 </div>
                 <div className="title">
-                    Goat Squirt
+                    Goat Squirts Soap Co.
                 </div>
                 <div className="nav">
                     <Link to="/">Home</Link>

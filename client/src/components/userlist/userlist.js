@@ -6,6 +6,10 @@ import ErrorPage from '../errorpage/errorpage';
 import NotAuthorized from '../notauthorized/notauthorized';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import checkboxHOC from 'react-table/lib/hoc/selectTable';
+import EditCreateUser from '../editcreateuser/editcreateuser';
+
+const CheckboxTable = checkboxHOC(ReactTable);
 
 const moment = require('moment')
 
@@ -16,7 +20,9 @@ class UserList extends Component {
       data: [],
       pages: -1,
       loading: true,
-      error: ""
+      error: "",
+      selection: "",
+      selected: null,
     };
     this.fetchData = this.fetchData.bind(this);
   }
@@ -25,6 +31,13 @@ class UserList extends Component {
     this.setState({ loading: true });
     const {page, pageSize, sorted, filtered} = state;
     this.getUserList(page, pageSize, sorted, filtered);
+  }
+
+  clearSelection = () => {
+    this.setState({
+      selection: "",
+      selected: null,
+    })
   }
 
   getUserList = (page, pageSize, sorted, filtered) => {
@@ -61,11 +74,12 @@ class UserList extends Component {
         })
 
         this.setState({
-          data: data.users,
+          data: users,
           pages: data.pagesInfo.totalPages,
           pagedata: data.pagesInfo,
           loading: false,
         })
+
       }).catch(err => {
         this.setState({
           error: err,
@@ -74,6 +88,17 @@ class UserList extends Component {
   }
 
 
+  toggleSelection = (key, shift, row) => {
+    this.setState({
+      selection: key,
+      selected: row,
+    });
+  };
+
+  isSelected = key => {
+    return this.state.selection.includes(key);
+  };
+
   render() {
     if (this.state.error) {
       if (this.state.error.message.includes("401")) {
@@ -81,29 +106,57 @@ class UserList extends Component {
       }
       return <ErrorPage / >
     } else {
+
+      const { toggleSelection, isSelected } = this;
       const { data, pages, loading } = this.state;
 
-      const columns = [
-        {Header: "First Name", accessor: "first_name"},
-        {Header: "Last Name", accessor: "last_name"},
-        {Header: "Email", accessor: "email"},
-        {Header: "Created", accessor: "createdAt"},
-        {Header: "Status", accessor: "status"},
-        {Header: "Roles", accessor: "user_roles", sortable: false},
-      ]
+      const columns = [{
+        Header: "Catalog Users",
+        columns: [
+          {Header: "First Name", accessor: "first_name", maxWidth: 150},
+          {Header: "Last Name", accessor: "last_name", maxWidth: 150},
+          {Header: "Email", accessor: "email", maxWidth: 400},
+          {Header: "Status", accessor: "status", maxWidth: 75},
+        ]
+      }]
+
+      const checkboxProps = {
+        isSelected,
+        toggleSelection,
+        selectType: "radio",
+        getTrProps: (s, r) => {
+          if(!r){
+            return {};
+          }
+          const selected = this.isSelected(r.original._id);
+          return {
+            style: {
+              backgroundColor: selected ? "#a2d2df" : "inherit"
+            }
+          };
+        }
+      };
 
       return (
-        <div>
-          <ReactTable
-            columns={columns}
-            manual
-            data={data}
-            pages={pages}
-            loading={loading}
-            onFetchData={this.fetchData}
-            defaultPageSize={10}
-            className="-striped -highlight"
-          />
+        <div className="UserList">
+          <div className="UserList-user-table">
+            <CheckboxTable
+                columns={columns}
+                manual
+                data={data}
+                pages={pages}
+                loading={loading}
+                onFetchData={this.fetchData}
+                defaultPageSize={10}
+                className="-striped -highlight"
+                style={{maxHeight: 800}}
+                ref={r => (this.checkboxTable = r)}
+                {...checkboxProps}
+              />
+          </div>
+          <div className="UserList-form">
+            <EditCreateUser userdata={this.state.selected} clearSelection={this.clearSelection}/>
+          </div>
         </div>
       )
     }

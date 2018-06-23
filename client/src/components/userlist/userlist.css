@@ -1,0 +1,5 @@
+.UserList {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    margin-top: 10px;
+}

@@ -3,7 +3,7 @@ const uc = require('../controllers/userController');
 
 const userRouter = express.Router();
 
-userRouter.get('/', uc.requireAuth, uc.getAllUsers);
+userRouter.post('/', uc.requireAuth, uc.getUsers);
 userRouter.get('/logout', uc.logout);
 userRouter.post('/login', uc.login);
 userRouter.post('/create', uc.requireAuth, uc.createUser);

@@ -31,9 +31,27 @@ class App extends Component {
         })
     }
 
+    componentWillMount = () => {
+        if(document.cookie){
+            const cookies = decodeURIComponent(document.cookie).split(';');
+            cookies.forEach(cookie => {
+                if(cookie.includes('thecatalog-info')){
+                    const parts = cookie.split('=');
+                    const info = JSON.parse(parts[1]);
+                    return this.setState({
+                        first_name: info.first_name,
+                        isAuthenticated: info.isAuthenticated,
+                        isAdmin: info.isAdmin,
+                        isAuthenticated: true,
+                    })
+                }
+            });
+        }
+    }
+
     secureRoute = (props) => {
         const target = props.location.pathname;
-        console.log(target)
+
         if(!this.state.isAuthenticated || target === "/login"){
             return (<Login {...props} handleLogin={this.handleLogin}/>);
         } else {

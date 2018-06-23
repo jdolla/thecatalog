@@ -20,8 +20,10 @@ class Login extends Component{
             body: JSON.stringify(req),
             headers: {
                 "content-type": "application/json",
+                'Accept': 'application/json',
             },
             method: 'POST',
+            credentials: 'same-origin',
         }).then( resp => {
             if(!resp.ok){
                 throw Error(resp.status);

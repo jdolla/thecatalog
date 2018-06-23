@@ -62,7 +62,15 @@ const login = (req, res, next) => {
                 {algorithm: 'RS512', expiresIn: tknOpt.expireTime}
             );
 
+            const infoCookie = {
+                isAdmin: data.roles.includes(roles.admin.name),
+                isReader: data.roles.includes(roles.reader.name),
+                first_name: data.first_name,
+            };
+
             res.cookie('thecatalog', cookieVal, cookieOpt);
+            res.cookie('thecatalog-info', JSON.stringify(infoCookie), { maxAge: 3599999 });
+
             return res.status(200).json({first_name: data.first_name});
         })
         .catch( err => {

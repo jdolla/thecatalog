@@ -5,6 +5,7 @@ import './header.css';
 
 class Header extends Component{
     render(){
+        const nav = this.props.activeNav;
         return(
             <div className="Header">
                 <div className="header-logobox">
@@ -13,7 +14,7 @@ class Header extends Component{
                     Goat Squirt
                 </div>
                 <div className="nav">
-                    <Link to="/">Home</Link>
+                    <Link to="/" className={nav === 'home'}>Home</Link>
                     <Link to="/users">Users</Link>
                     <a href="#">Logout</a>
                 </div>

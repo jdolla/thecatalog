@@ -13,6 +13,28 @@
     align-content: center;
 }
 
+.Header a {
+    color: black;
+    text-align: center;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 25px;
+    border-radius: 2px;
+    color: #ece1e1;
+}
+
+.Header a:hover {
+    background-color: #ece1e1;
+    color: black;
+}
+
+.Header a.active {
+    background-color: #857a7a;
+    font-weight: bold;
+    color: black;
+}
+
 .title {
     font-weight: bold;
     text-align: center;

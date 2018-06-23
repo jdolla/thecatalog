@@ -13,6 +13,7 @@ class App extends Component {
         isAuthenticated: false,
         isAdmin: false,
         isCreator: false,
+        activeNav: "home",
     }
 
     handleLogin = (userInfo, cb) => {
@@ -40,14 +41,16 @@ class App extends Component {
                     const info = JSON.parse(parts[1]);
                     return this.setState({
                         first_name: info.first_name,
-                        isAuthenticated: info.isAuthenticated,
                         isAdmin: info.isAdmin,
                         isAuthenticated: true,
+                        isReader: info.isReader,
                     })
                 }
             });
         }
     }
+
+
 
     secureRoute = (props) => {
         const target = props.location.pathname;
@@ -73,6 +76,13 @@ class App extends Component {
         }
     }
 
+    handleRouteChange = () => {
+        console.log('here');
+        this.setState({
+            activeNav: "bob"
+        })
+    }
+
     render() {
         return (
             <BrowserRouter>
@@ -81,7 +91,8 @@ class App extends Component {
                         isAuthenticated={this.state.isAuthenticated}
                         first_name={this.state.first_name}
                         isAdmin={this.state.isAdmin}
-                        logoutHandler={this.logoutHandler}/>
+                        logoutHandler={this.logoutHandler}
+                        activeNav={this.state.activeNav}/>
                     <Switch>
                         <Route exact path="/" render={this.secureRoute}/>
                         <Route exact path="/users" render={this.secureRoute}/>

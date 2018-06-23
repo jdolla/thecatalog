@@ -34,13 +34,15 @@ class Login extends Component{
                 this.props.history.push(this.props.backTo);
             });
         }).catch( err => {
+            if(err.includes('401')){
+                return this.setState({
+                    shake: true,
+                    errorMessage: "invalid username or password",
+                    first_name: "",
+                    authenticated: false,
+                })
+            }
             console.log(err)
-            this.setState({
-                shake: true,
-                errorMessage: "invalid username or password",
-                first_name: "",
-                authenticated: false,
-            })
         })
     }
 

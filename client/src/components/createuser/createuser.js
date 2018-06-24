@@ -25,8 +25,70 @@ class CreateUser extends Component{
         return OptionList;
     }
 
+    resetForm = () => {
+        this.setState({
+            first_name: "",
+            last_name: "",
+            email: "",
+            password: "",
+            conf_password: "",
+            user_roles: [],
+        });
+    }
+
+    handleClear = (event) => {
+        event.preventDefault();
+        this.resetForm();
+    }
+
+    handleSave = (event) => {
+        event.preventDefault();
+        const userForm = event.target.parentElement.parentElement;
+        if(!userForm.checkValidity()){
+            userForm.reportValidity();
+        } else if (this.state.password !== this.state.conf_password){
+            // document.getElementById("email").setCustomValidity("This email is already registered!");
+            const confpswd = userForm.querySelector('input[name="conf_password"]');
+            confpswd.setCustomValidity("Passwords must match");
+            confpswd.reportValidity();
+        } else {
+            const newUser = {
+                email: this.state.email,
+                first_name: this.state.first_name,
+                last_name: this.state.last_name,
+                password: this.state.password,
+                conf_password: this.state.conf_password,
+                user_roles: this.state.user_roles,
+            }
+
+            fetch("/api/user/create", {
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify(newUser),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Cache': 'no-cache'
+                }
+            }).then(resp => {
+                if(!resp.ok){
+                    throw Error(`${resp.status} ${resp.statusText}`);
+                }
+                return resp.json();
+            }).then(data => {
+                this.resetForm();
+            }).catch(err => {
+                console.log(err)
+            });
+        }
+    }
+
+
     handleChange = (event) => {
         const target = event.target;
+        if(target.name === 'conf_password'){
+            target.setCustomValidity("");
+        }
         if(target.name === 'user_roles'){
             let roles = [];
             const options = target.options;
@@ -47,6 +109,14 @@ class CreateUser extends Component{
     }
 
     render(){
+        const state = this.state;
+        const val_fname = (state.first_name) ? " hidden" : "";
+        const val_lname = (state.last_name) ? " hidden" : "";
+        const val_email = (state.email) ? " hidden" : "";
+        const val_pswd = (state.password) ? " hidden" : "";
+        const val_roles = (state.user_roles.length > 0) ? " hidden" : "";
+        const val_conf = (state.conf_password === state.password) ? " hidden" : "";
+
         return(
             <div className="Create-User">
                 <div className="heading">
@@ -54,7 +124,9 @@ class CreateUser extends Component{
                 </div>
                 <form action="submit" className="create-user-form">
                     <div className="createuser-input">
-                        <label htmlFor="first_name" >First Name</label>
+                        <label htmlFor="first_name">first name
+                            <span className={"tooltip-text" + val_fname}>*required</span>
+                        </label>
                         <br/>
                         <input
                             type="text"
@@ -66,7 +138,9 @@ class CreateUser extends Component{
 
                     </div>
                     <div className="createuser-input" >
-                        <label htmlFor="last_name">Last Name</label>
+                        <label htmlFor="last_name">last name
+                            <span className={"tooltip-text" + val_lname}>*required</span>
+                        </label>
                         <br/>
                         <input
                             type="text"
@@ -76,7 +150,9 @@ class CreateUser extends Component{
                             value={this.state.last_name}/>
                     </div>
                     <div className="createuser-input">
-                        <label htmlFor="email">email</label>
+                        <label htmlFor="email">email
+                            <span className={"tooltip-text" + val_email}>*required</span>
+                        </label>
                         <br/>
                         <input
                             type="email"
@@ -86,7 +162,9 @@ class CreateUser extends Component{
                             value={this.state.email}/>
                     </div>
                     <div className="createuser-input">
-                        <label htmlFor="password">Password</label>
+                        <label htmlFor="password">password
+                            <span className={"tooltip-text" + val_pswd}>*required</span>
+                        </label>
                         <br/>
                         <input
                             type="password"
@@ -96,7 +174,9 @@ class CreateUser extends Component{
                             value={this.state.password}/>
                     </div>
                     <div className="createuser-input">
-                        <label htmlFor="conf_password">Confirm Password</label>
+                        <label htmlFor="conf_password">confirm password
+                            <span className={"tooltip-text" + val_conf}>*passwords must match</span>
+                        </label>
                         <br/>
                         <input
                             type="password"
@@ -106,7 +186,9 @@ class CreateUser extends Component{
                             value={this.state.conf_password}/>
                     </div>
                     <div className="createuser-input">
-                        <label htmlFor="roles">User Roles</label>
+                        <label htmlFor="roles">User Roles
+                            <span className={"tooltip-text" + val_roles}>*required</span>
+                        </label>
                         <br/>
                         <select
                             name="user_roles"
@@ -118,8 +200,8 @@ class CreateUser extends Component{
                         </select>
                     </div>
                     <div className="buttons">
-                        <button>Clear</button>
-                        <button>Save</button>
+                        <button onClick={this.handleClear}>Clear</button>
+                        <button onClick={this.handleSave}>Save</button>
                     </div>
                 </form>
             </div>

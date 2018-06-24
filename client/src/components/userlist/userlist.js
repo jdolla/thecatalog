@@ -23,8 +23,18 @@ class UserList extends Component {
       error: "",
       selection: "",
       selected: null,
+      mode: "view",
+      showForms: false,
     };
     this.fetchData = this.fetchData.bind(this);
+  }
+
+  componentDidUpdate = (prevProps, prevState, snapshot) => {
+    if(this.state.selected && this.state.selected !== prevState.selected){
+        this.setState({
+            mode: "view"
+        })
+    }
   }
 
   fetchData(state, instance) {
@@ -87,6 +97,30 @@ class UserList extends Component {
       })
   }
 
+  clickArrow = (event) => {
+    const direction = event.target.className;
+    let showForms = direction.includes("left");
+    this.setState({
+      showForms,
+    })
+  }
+
+  handleEditClick = () => {
+      if(this.state.selected){
+          this.setState({
+              mode: "edit",
+              showForms: true,
+          })
+      }
+  }
+
+  handleCreateClick = () => {
+      this.clearSelection();
+      this.setState({
+          mode: "create",
+          showForms: true,
+      })
+  }
 
   toggleSelection = (key, shift, row) => {
     this.setState({
@@ -137,6 +171,9 @@ class UserList extends Component {
         }
       };
 
+
+      const formClass = (this.state.showForms) ? "" : " hidden"
+
       return (
         <div className="UserList">
           <div className="UserList-user-table">
@@ -149,13 +186,33 @@ class UserList extends Component {
                 onFetchData={this.fetchData}
                 defaultPageSize={10}
                 className="-striped -highlight"
-                style={{maxHeight: 800}}
+                style={{height: "500px"}}
                 ref={r => (this.checkboxTable = r)}
                 {...checkboxProps}
               />
           </div>
-          <div className="UserList-form">
-            <EditCreateUser userdata={this.state.selected} clearSelection={this.clearSelection}/>
+          <div className="userlist-buttons">
+            <div className="button create-user"
+                onClick={this.handleCreateClick}>
+                <img src="./images/create.png" alt="create"/>
+                <span className="tooltip-text">Create New User</span>
+            </div>
+
+            <div className="button edit-user"
+                onClick={this.handleEditClick}>
+                <img src="./images/edit2.png" alt="edit"/>
+                <span className="tooltip-text">Edit User</span>
+            </div>
+            <div></div>
+            <div>
+              <div className="arrow-right arrow" onClick={this.clickArrow}></div>
+            </div>
+            <div>
+              <div className="arrow-left arrow" onClick={this.clickArrow}></div>
+            </div>
+          </div>
+          <div className={"UserList-form" + formClass}>
+            <EditCreateUser userdata={this.state.selected} clearSelection={this.clearSelection} mode={this.state.mode}/>
           </div>
         </div>
       )

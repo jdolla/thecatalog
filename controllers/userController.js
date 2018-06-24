@@ -183,6 +183,16 @@ const requireAuth = (req, res, next) => {
     return next()
 }
 
+
+const getRoles = (req, res, next) => {
+    const user_roles = req.userInfo.user_roles;
+    if(!user_roles.includes(roles.admin.name)){
+        return next(createError(401))
+    }
+
+    return res.json(roles);
+}
+
 const getUsers = (req, res, next) => {
     const user_roles = req.userInfo.user_roles;
     if(!user_roles.includes(roles.admin.name)){
@@ -234,4 +244,5 @@ module.exports = {
     getAuth,
     requireAuth,
     getUsers,
+    getRoles,
 }

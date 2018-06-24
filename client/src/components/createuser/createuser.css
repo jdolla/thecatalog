@@ -1,12 +1,74 @@
 .Create-User {
-    /* padding-left: 10px; */
+    background-color: #d3d3d34f;
+    /* border-top-left-radius: 10px; */
+    /* border-bottom-left-radius: 10px; */
+    height: 500px;
+    position: relative;
+    border: .5px solid lightgray;
+}
+
+.Create-User .heading {
+    text-align: center;
+    padding: 5px;
 }
 
 .createuser-input {
     margin-bottom: 10px;
 }
 
+.createuser-input select {
+    height: 75px;
+}
+
+.createuser-input input,
+select {
+    width: 100%;
+    padding: 5px;
+    border-top: 1px solid lightgray;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    outline: none;
+}
+
+.Create-User input:focus,
+select:focus {
+    border: 1px solid darkgray;
+}
+
 .create-user-form {
-    background-color: rgba(211, 211, 211, 0.24);
-    padding: 10px;
+    padding: 10px 15px;
+}
+
+.Create-User .buttons {
+    text-align: center;
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+}
+
+.Create-User .buttons button {
+    background-color: #1f1e1e;
+    border: none;
+    color: #ece1e1;
+    padding: 6px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    border-radius: 3px;
+    outline: none;
+    margin: 0 36px;
+}
+
+.Create-User .buttons button:hover {
+    cursor: pointer;
+    background-color: #ece1e1;
+    color: black;
+}
+
+.Create-User .buttons button:active {
+    background-color: #857a7a;
+    font-weight: bold;
+    color: black;
 }

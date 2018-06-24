@@ -34,7 +34,7 @@ class Login extends Component{
                 this.props.history.push(this.props.backTo);
             });
         }).catch( err => {
-            if(err.includes('401')){
+            if(err.message.includes('401')){
                 return this.setState({
                     shake: true,
                     errorMessage: "invalid username or password",

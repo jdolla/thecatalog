@@ -7,76 +7,68 @@ import CreateUser from '../createuser/createuser';
 class EditCreateUser extends Component {
 
     state = {
-        mode: "view"
+        user_roles: [],
     }
 
-    componentDidUpdate = (prevProps, prevState, snapshot) => {
-        if(this.props.userdata && this.props.userdata !== prevProps.userdata){
+    componentDidMount = () => {
+
+        fetch('/api/user/roles', {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Cache': 'no-cache'
+              },
+        }).then( resp => {
+            if(!resp.ok){
+                throw Error(resp.status);
+            }
+            return resp.json();
+        }).then( data => {
+            const keys = Object.keys(data);
+            let roles = []
+            for (let i = 0; i < keys.length; i++) {
+                if(data.hasOwnProperty(keys[i])){
+                    roles.push(data[keys[i]].name);
+                }
+            }
             this.setState({
-                mode: "view"
+                user_roles: roles,
             })
-        }
-    }
-
-    handleEditClick = () => {
-        if(this.props.userdata){
-            this.setState({
-                mode: "edit"
-            })
-        }
-    }
-
-    handleCreateClick = () => {
-        this.props.clearSelection();
-        this.setState({
-            mode: "create"
+        }).catch(err => {
+            console.log(err);
         })
     }
 
     renderMode = () => {
         let mode = null;
-        switch (this.state.mode) {
+        switch (this.props.mode) {
             case 'view':
             case 'edit':
                 mode = (
                     <div>
-                        {this.state.mode}
+                        {this.props.mode}
                     </div>
                 )
                 break;
 
             default:
                 mode = (
-                    <CreateUser/>
+                    <CreateUser user_roles={this.state.user_roles}/>
                 )
                 break;
         }
 
         return mode;
     }
+
     render(){
 
             return(
                 <div className="edituser">
-                    <div className="edituser-buttons">
-
-                        <div className="button create-user"
-                            onClick={this.handleCreateClick}>
-                            <img src="./images/create.png" alt="create"/>
-                            <span className="tooltip-text">Create New User</span>
-                        </div>
-
-                        <div className="button edit-user"
-                            onClick={this.handleEditClick}>
-                            <img src="./images/edit2.png" alt="edit"/>
-                            <span className="tooltip-text">Edit User</span>
-                        </div>
-
-                    </div>
                     <div className="edituser-forms">
-                        <div>
-                            {this.renderMode()}
-                        </div>
+                        {this.renderMode()}
                     </div>
                 </div>
             )

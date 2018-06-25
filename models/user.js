@@ -79,7 +79,7 @@ UserSchema.statics.authByEmail = async function(email, password){
     return null;
   }
   const match = await bcrypt.compare(password, user.password);
-  return (match) ? { id: user.id, roles: user.user_roles, first_name: user.first_name } : null;
+  return (match && user.status === 'active') ? { id: user.id, roles: user.user_roles, first_name: user.first_name } : null;
 }
 
 

@@ -29,6 +29,7 @@ class ModifyUser extends Component{
         this.state = {
             user_roles: [],
             passChars: chars,
+            tempPswd: "",
         }
     }
 
@@ -36,6 +37,7 @@ class ModifyUser extends Component{
         if(prevProps.userdata !== this.props.userdata){
             this.setState({
                 user_roles: this.props.userdata.user_roles,
+                tempPswd: "",
             })
         }
     }
@@ -60,9 +62,47 @@ class ModifyUser extends Component{
     handleSaveRoles = (event) => {
         event.preventDefault();
         const usrForm = event.target.parentElement.parentElement;
+
         if(!usrForm.checkValidity()){
-            usrForm.reportValidity();
+            return usrForm.reportValidity();
         }
+
+        const req = {
+            id: this.props.userdata._id,
+            user_roles: this.state.user_roles,
+        }
+
+        console.log(req);
+        fetch('/api/user/setrole', {
+            body: JSON.stringify(req),
+            headers: {
+                "content-type": "application/json",
+                'Accept': 'application/json',
+            },
+            method: 'POST',
+            credentials: 'same-origin',
+        }).then( resp => {
+            if(!resp.ok){
+                throw Error(resp.status);
+            }
+            return 200;
+        }).then(data => {
+            this.setState({
+                mode:"view",
+            });
+            this.props.refreshUserList();
+        }).catch( err => {
+            if(err.message.includes('401')){
+                return this.setState({
+                    shake: true,
+                    errorMessage: "invalid username or password",
+                    first_name: "",
+                    authenticated: false,
+                })
+            }
+            console.log(err)
+        })
+
 
     }
 
@@ -94,15 +134,49 @@ class ModifyUser extends Component{
     getRandomPassword = () => {
         let password = [];
         const passChars = this.state.passChars;
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 18; i++) {
             password.push(passChars[this.randBetween(0, passChars.length)]);
         }
-        alert(password.join(''));
-        return null;
+        return password.join('');
     }
 
     handlResetPassword = () => {
-        this.getRandomPassword();
+        const newpswd = this.getRandomPassword();
+        const req ={
+            id: this.props.userdata._id,
+            new_password: newpswd,
+            new_password_conf: newpswd,
+        }
+
+        fetch('/api/user/pswdUpdt', {
+            body: JSON.stringify(req),
+            headers: {
+                "content-type": "application/json",
+                'Accept': 'application/json',
+            },
+            method: 'POST',
+            credentials: 'same-origin',
+        }).then( resp => {
+            if(!resp.ok){
+                throw Error(resp.status);
+            }
+            return 200;
+        }).then( data => {
+            this.setState({
+                tempPswd: newpswd,
+            })
+        }).catch( err => {
+            if(err.message.includes('401')){
+                return this.setState({
+                    shake: true,
+                    errorMessage: "invalid username or password",
+                    first_name: "",
+                    authenticated: false,
+                })
+            }
+            console.log(err)
+        })
+
     }
 
     render(){
@@ -128,6 +202,7 @@ class ModifyUser extends Component{
             )
         };
 
+        const pswdHidden = (this.state.tempPswd) ? "" : " hidden";
         const actBtn = (userdata.status === 'active') ? 'Deactivate' : 'Activate';
         const fname = userdata.first_name;
         const lname = userdata.last_name;
@@ -171,8 +246,11 @@ class ModifyUser extends Component{
                     </button>
                 </div>
             </form>
-
                 <div className="buttons">
+                    <div className={"random-pass" + pswdHidden}>
+                        <div className="label">new password:</div>
+                        <div className="temp-pass">{this.state.tempPswd}</div>
+                    </div>
                     <button onClick={this.handleStatusChange}>{actBtn}</button>
                     <button onClick={this.handlResetPassword}>Reset Password</button>
                 </div>

@@ -88,11 +88,16 @@ const updatePassword = (req, res, next) => {
     const { id:authId, user_roles:authRoles } = req.userInfo
     const { id, password, new_password, new_password_conf } = req.body
 
-    if (authId !== id && !authRoles.includes(roles.admin.name)) {
+    const isAdmin = authRoles.includes(roles.admin.name);
+    if (authId !== id && !isAdmin) {
         return next(createError(401))
     }
 
-    if (!id || !password || !new_password || !new_password_conf){
+    if (!password && !isAdmin){
+        return next(createError(401))
+    }
+
+    if (!id || !new_password || !new_password_conf){
         return next(createError(400, 'Missing required values.'))
     }
 
@@ -243,8 +248,18 @@ const setRole = (req, res, next) => {
     }
 
 
+    const {id, user_roles:newRoles} = req.body;
 
-    return res.status(200).send();
+    if(newRoles.length <= 0){
+        return next(createError(400, 'Role is required.'))
+    }
+
+    User.update({_id: id}, {$set: {user_roles: newRoles}})
+        .then(data => {
+            return res.status(200).send();
+        }).catch(err => {
+            return next(createError(500, undefined, err));
+        })
 }
 
 const deactivate = (req, res, next) => {

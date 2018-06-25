@@ -97,3 +97,16 @@
 .Modify-User .hidden {
     visibility: hidden;
 }
+
+.Modify-User .temp-pass {
+    background-color: white;
+    margin: 3px 5px 45px auto;
+    padding: 3px;
+    width: 200px;
+    display: inline-block;
+}
+
+.Modify-User .random-pass .label {
+    width: 120px;
+    display: inline-block;
+}

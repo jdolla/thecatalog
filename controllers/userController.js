@@ -242,13 +242,17 @@ const getUsers = (req, res, next) => {
 }
 
 const setRole = (req, res, next) => {
-    const user_roles = req.userInfo.user_roles;
+    const { user_roles, id:authId } = req.userInfo;
     if(!user_roles.includes(roles.admin.name)){
         return next(createError(401))
     }
 
 
     const {id, user_roles:newRoles} = req.body;
+
+    if(id === authId) {
+        return next(createError(400, 'May not change your own roles.'));
+    }
 
     if(newRoles.length <= 0){
         return next(createError(400, 'Role is required.'))
@@ -269,14 +273,14 @@ const deactivate = (req, res, next) => {
     }
 
     if(req.userInfo.id === req.params.id){
-        return next(createError(401, 'May not deactivate yourself!'))
+        return next(createError(400, 'May not deactivate yourself!'))
     }
 
     User.update({_id: req.params.id}, { $set: {status: 'inactive'}})
         .then(data => {
             return res.status(200).send();
         }).catch(err => {
-            next(createError(500, undefined, err))
+            return next(createError(500, undefined, err))
         })
 
 }

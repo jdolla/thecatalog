@@ -6,8 +6,29 @@ class ModifyUser extends Component{
 
     constructor(){
         super();
+
+
+        /**************
+         * Random Password Chars
+         **************/
+        let chars = [];
+        for (let i = 65; i < 91; i++) {
+            chars.push(String.fromCharCode(i))
+        }
+        for (let i = 97; i < 123; i++){
+            chars.push(String.fromCharCode(i))
+        }
+        for (let i = 48; i < 58; i++){
+            chars.push(String.fromCharCode(i))
+        }
+        chars.push(String.fromCharCode(33))
+        chars.push(String.fromCharCode(35))
+        chars.push(String.fromCharCode(63))
+        chars.push(String.fromCharCode(94))
+
         this.state = {
-            user_roles: []
+            user_roles: [],
+            passChars: chars,
         }
     }
 
@@ -64,6 +85,24 @@ class ModifyUser extends Component{
         }).catch(err => {
             console.log(err);
         })
+    }
+
+    randBetween = (min, max) => {
+        return Math.floor(Math.random() * (max - min) ) + min;
+    }
+
+    getRandomPassword = () => {
+        let password = [];
+        const passChars = this.state.passChars;
+        for (let i = 0; i < 20; i++) {
+            password.push(passChars[this.randBetween(0, passChars.length)]);
+        }
+        alert(password.join(''));
+        return null;
+    }
+
+    handlResetPassword = () => {
+        this.getRandomPassword();
     }
 
     render(){
@@ -135,7 +174,7 @@ class ModifyUser extends Component{
 
                 <div className="buttons">
                     <button onClick={this.handleStatusChange}>{actBtn}</button>
-                    <button>Reset Password</button>
+                    <button onClick={this.handlResetPassword}>Reset Password</button>
                 </div>
             </div>
         )

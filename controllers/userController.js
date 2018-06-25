@@ -236,6 +236,33 @@ const getUsers = (req, res, next) => {
     })
 }
 
+const setRole = (req, res, next) => {
+    const user_roles = req.userInfo.user_roles;
+    if(!user_roles.includes(roles.admin.name)){
+        return next(createError(401))
+    }
+
+
+
+    return res.status(200).send();
+}
+
+const deactivate = (req, res, next) => {
+    const user_roles = req.userInfo.user_roles;
+    if(!user_roles.includes(roles.admin.name)){
+        return next(createError(401))
+    }
+
+    User.update({_id: req.params.id}, { $set: {status: 'inactive'}})
+        .then(data => {
+            console.log(data);
+            return res.status(200).send();
+        }).catch(err => {
+            next(createError(500, undefined, err))
+        })
+
+}
+
 module.exports = {
     createUser,
     updatePassword,
@@ -245,4 +272,6 @@ module.exports = {
     requireAuth,
     getUsers,
     getRoles,
+    setRole,
+    deactivate,
 }

@@ -40,6 +40,15 @@ class UserList extends Component {
   fetchData(state, instance) {
     this.setState({ loading: true });
     const {page, pageSize, sorted, filtered} = state;
+    this.setState({
+      tableState: {
+        page,
+        pageSize,
+        sorted,
+        filtered
+      }
+    });
+
     this.getUserList(page, pageSize, sorted, filtered);
   }
 
@@ -50,7 +59,20 @@ class UserList extends Component {
     })
   }
 
-  getUserList = (page, pageSize, sorted, filtered) => {
+  refreshUserList = () => {
+    const {page, pageSize, sorted, filtered} = this.state.tableState;
+    this.getUserList(page, pageSize, sorted, filtered, () => {
+      this.state.data.forEach(datum => {
+        if(datum._id === this.state.selection){
+          return this.setState({
+            selected: datum,
+          })
+        }
+      });
+    });
+  }
+
+  getUserList = (page, pageSize, sorted, filtered, cb) => {
       const query = {
         page,
         pageSize,
@@ -74,11 +96,11 @@ class UserList extends Component {
           return resp.json();
       }).then( data => {
         const users = data.users.map(user => {
-          const roles = user.user_roles;
-          user.user_roles = roles.sort().join(', ');
+          // const roles = user.user_roles;
+          // user.user_roles = roles.sort().join(', ');
 
           const created = user.createdAt;
-          user.createdAt = moment(created).format('YYYY-MM-DD @ HH:mm');
+          user.createdAt = moment(created).format('YYYY-MM-DD');
 
           return user;
         })
@@ -88,6 +110,10 @@ class UserList extends Component {
           pages: data.pagesInfo.totalPages,
           pagedata: data.pagesInfo,
           loading: false,
+        }, () => {
+          if(cb){
+            cb();
+          }
         })
 
       }).catch(err => {
@@ -212,7 +238,12 @@ class UserList extends Component {
             </div>
           </div>
           <div className={"UserList-form" + formClass}>
-            <EditCreateUser userdata={this.state.selected} clearSelection={this.clearSelection} mode={this.state.mode}/>
+            <EditCreateUser
+              userdata={this.state.selected}
+              clearSelection={this.clearSelection}
+              mode={this.state.mode}
+              refreshUserList={this.refreshUserList}
+            />
           </div>
         </div>
       )

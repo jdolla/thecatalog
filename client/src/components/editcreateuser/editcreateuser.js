@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './editcreateuser.css';
 
 import CreateUser from '../createuser/createuser';
-
+import ModifyUser from '../modifyuser/modifyuser';
 
 class EditCreateUser extends Component {
 
@@ -47,15 +47,20 @@ class EditCreateUser extends Component {
             case 'view':
             case 'edit':
                 mode = (
-                    <div>
-                        {this.props.mode}
-                    </div>
+                    <ModifyUser
+                        mode={this.props.mode}
+                        user_roles={this.state.user_roles}
+                        userdata={this.props.userdata}
+                        refreshUserList={this.props.refreshUserList}
+                    />
                 )
                 break;
 
             default:
                 mode = (
-                    <CreateUser user_roles={this.state.user_roles}/>
+                    <CreateUser user_roles={this.state.user_roles}
+                        refreshUserList={this.props.refreshUserList}
+                    />
                 )
                 break;
         }

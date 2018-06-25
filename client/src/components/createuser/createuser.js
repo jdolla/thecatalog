@@ -77,6 +77,7 @@ class CreateUser extends Component{
                 return resp.json();
             }).then(data => {
                 this.resetForm();
+                this.props.refreshUserList();
             }).catch(err => {
                 console.log(err)
             });

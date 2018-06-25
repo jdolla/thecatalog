@@ -253,9 +253,31 @@ const deactivate = (req, res, next) => {
         return next(createError(401))
     }
 
+    if(req.userInfo.id === req.params.id){
+        return next(createError(401, 'May not deactivate yourself!'))
+    }
+
     User.update({_id: req.params.id}, { $set: {status: 'inactive'}})
         .then(data => {
-            console.log(data);
+            return res.status(200).send();
+        }).catch(err => {
+            next(createError(500, undefined, err))
+        })
+
+}
+
+const activate = (req, res, next) => {
+    const user_roles = req.userInfo.user_roles;
+    if(!user_roles.includes(roles.admin.name)){
+        return next(createError(401))
+    }
+
+    if(req.userInfo.id === req.params.id){
+        return next(createError(401, 'May not activate yourself!'))
+    }
+
+    User.update({_id: req.params.id}, { $set: {status: 'active'}})
+        .then(data => {
             return res.status(200).send();
         }).catch(err => {
             next(createError(500, undefined, err))
@@ -274,4 +296,5 @@ module.exports = {
     getRoles,
     setRole,
     deactivate,
+    activate,
 }

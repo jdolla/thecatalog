@@ -45,8 +45,10 @@ class ModifyUser extends Component{
 
     }
 
-    handleDeactivate = (event) => {
-        fetch(`/api/user/deactivate/${this.props.userdata._id}`, {
+    handleStatusChange = (event) => {
+        const userdata = this.props.userdata;
+        const operation = (userdata.status === 'active') ? 'deactivate' : 'activate';
+        fetch(`/api/user/${operation}/${this.props.userdata._id}`, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -87,6 +89,7 @@ class ModifyUser extends Component{
             )
         };
 
+        const actBtn = (userdata.status === 'active') ? 'Deactivate' : 'Activate';
         const fname = userdata.first_name;
         const lname = userdata.last_name;
         return(
@@ -131,7 +134,7 @@ class ModifyUser extends Component{
             </form>
 
                 <div className="buttons">
-                    <button onClick={this.handleDeactivate}>Deactivate</button>
+                    <button onClick={this.handleStatusChange}>{actBtn}</button>
                     <button>Reset Password</button>
                 </div>
             </div>

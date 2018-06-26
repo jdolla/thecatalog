@@ -16,7 +16,14 @@ const roles = {
     }
   }
 
+const productTypes = [
+    "soap",
+    "shampoo",
+    "body wash",
+]
+
 
 module.exports = {
     roles,
+    productTypes
 }

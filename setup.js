@@ -2,7 +2,13 @@ const mongoose = require('mongoose');
 const mongoConn = process.env.mongodb || "mongodb://localhost/thecatalog";
 mongoose.connect(mongoConn);
 
-const User = require('./models/user.js');
+const User = require('./models/user');
+const Brand = require('./models/brand');
+
+
+
+
+
 const password = process.env.adminDefault || "password123"
 
 const defaultAdmin = {
@@ -14,7 +20,7 @@ const defaultAdmin = {
     user_roles: ["admin", "reader"]
 }
 
-const CreateDefaultAdmin = async defaultAdmin => {
+const CreateDefaultAdmin = async (defaultAdmin, defaultBrands) => {
     try {
         const user = await User.findOne().byEmail(defaultAdmin.email)
         if(!user){
@@ -35,6 +41,33 @@ const CreateDefaultAdmin = async defaultAdmin => {
             console.log('Default admin already exists.')
         }
 
+        try {
+            for (const brand of defaultBrands){
+                const existing = await Brand.findOne().byName(brand.name)
+                if(!existing){
+                    const nb = await Brand.create(brand);
+                    console.log(`
+                    \n${'*'.repeat(100)}
+
+                    Created new brand: ${ brand.name }
+
+                    \n${'*'.repeat(100)}
+                    `)
+                } else {
+                    console.log(`
+                    \n${'*'.repeat(100)}
+
+                    Brand alread exists: ${ brand.name }
+
+                    \n${'*'.repeat(100)}
+                    `)
+                }
+
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
     } catch (error) {
         console.log(error);
     } finally {
@@ -42,4 +75,22 @@ const CreateDefaultAdmin = async defaultAdmin => {
     }
 }
 
-CreateDefaultAdmin(defaultAdmin)
+
+const defaultBrands = [
+    {
+        name: "Tres Chevres",
+        site: "www.treschevres.com",
+        description: "High-end luxury boutique soap. Handmade in small batches with only the finest ingreedients and essential oils."
+    }, {
+        name: "Fainting Goat Soaps",
+        site: "www.faintinggoat.com",
+        description: "Mid-tier handmade soap sold direct to consumers via online marketplace and B2B sales. Mid-grade ingreedients and fragrance oils."
+    }, {
+        name: "The Billy Goat Soaps",
+        site: "www.bgsoaps.com",
+        description: "Mass produced soaps intended for hotel chains. Mainly comes in sample sizes. Unscented & lavendar scents available."
+    }
+]
+
+
+CreateDefaultAdmin(defaultAdmin, defaultBrands);

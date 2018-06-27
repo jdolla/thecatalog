@@ -1,6 +1,7 @@
 'use strict';
 const mongoose = require('mongoose');
 const {roles, productTypes} = require('../helpers/dictionaries');
+const { ProductSchema } = require('./product');
 
 const OfferSchema = new mongoose.Schema({
     name: {
@@ -12,10 +13,7 @@ const OfferSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    products: {
-        type: Array,
-        required: true,
-    },
+    products: ProductSchema,
     brand: {
         type: String,
         require: true,
@@ -27,6 +25,10 @@ const OfferSchema = new mongoose.Schema({
     subscription: {
         type: Boolean,
         required: true,
+    },
+    quantity: {
+        type: Number,
+        required: true
     }
 }, { timestamps: true });
 

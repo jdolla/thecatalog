@@ -25,6 +25,15 @@ app.use(getAuth)
 const { userRouter} = require('./routes/userRoute')
 app.use('/api/user', userRouter)
 
+const { brandRouter } = require('./routes/brandRoute')
+app.use('/api/brand', brandRouter);
+
+const { productRouter } = require('./routes/productRoute')
+app.use('/api/product', productRouter);
+
+const { offerRouter } = require('./routes/offerRoute')
+app.use('/api/offer', offerRouter);
+
 
 // Middleware: Error Handling
 const { logError } = require('./controllers/errorController')

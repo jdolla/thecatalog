@@ -13,6 +13,14 @@ const roles = {
             "May view products and offers.",
             "May view workflows and statuses",
         ]
+    },
+    "manager": {
+        name: "manager",
+        description: [
+            "May view products and offers.",
+            "May view workflows and statuses.",
+            "Create new products and offers."
+        ]
     }
   }
 

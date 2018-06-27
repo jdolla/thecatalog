@@ -1,6 +1,7 @@
 'use strict';
 const mongoose = require('mongoose');
-const {roles, productTypes} = require('../helpers/dictionaries');
+const {productTypes} = require('../helpers/dictionaries');
+
 
 const ProductSchema = new mongoose.Schema({
     name: {
@@ -25,4 +26,5 @@ ProductSchema.query.byName = function(name) {
     return this.where({name});
 }
 
-module.exports = mongoose.model('Product', ProductSchema);
+module.exports = mongoose.model('Product', ProductSchema),
+module.exports.ProductSchema = ProductSchema;

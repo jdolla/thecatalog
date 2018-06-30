@@ -3,8 +3,8 @@ import './App.css';
 import Header from './components/header/header';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './components/login/login';
-import OfferList from './components/offerlist/offerlist';
 import UserList from './components/userlist/userlist';
+import ProductsAndOffers from './components/productsandoffers/productsandoffers';
 import NotFound from './components/notfound/notfound';
 
 class App extends Component {
@@ -81,7 +81,7 @@ class App extends Component {
                     break;
 
                 case "/":
-                    goTo = (<OfferList {...props} />);
+                    goTo = (<ProductsAndOffers {...props} />);
                     break;
 
                 default:

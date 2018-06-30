@@ -1,0 +1,101 @@
+.CreateProduct {
+    background-color: #d3d3d34f;
+    height: 500px;
+    width: 350px;
+    position: relative;
+    border: .5px solid lightgray;
+}
+
+.CreateProduct * {
+    box-sizing: border-box;
+}
+
+.CreateProduct textarea {
+    resize: none;
+    height: 200px;
+}
+
+.CreateProduct input,
+textarea {
+    width: 100%
+}
+
+.CreateProduct .heading {
+    text-align: center;
+    padding: 5px;
+}
+
+.createproduct-input {
+    margin-bottom: 10px;
+}
+
+.createproduct-input input,
+textarea {
+    width: 100%;
+    padding: 5px;
+    border-top: 1px solid lightgray;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    outline: none;
+}
+
+.CreateProduct input:focus,
+textarea:focus {
+    border: 1px solid darkgray;
+}
+
+.CreateProduct-form {
+    padding: 10px 15px;
+}
+
+.CreateProduct .buttons {
+    text-align: center;
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+}
+
+.CreateProduct .buttons button {
+    background-color: #1f1e1e;
+    border: none;
+    color: #ece1e1;
+    padding: 6px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    border-radius: 3px;
+    outline: none;
+    margin: 0 36px;
+}
+
+.CreateProduct .buttons button:hover {
+    cursor: pointer;
+    background-color: #ece1e1;
+    color: black;
+}
+
+.CreateProduct .buttons button:active {
+    background-color: #857a7a;
+    font-weight: bold;
+    color: black;
+}
+
+.CreateProduct-form label {
+    position: relative;
+}
+
+.CreateProduct .tooltip-text {
+    color: red;
+    text-align: center;
+    position: absolute;
+    z-index: 1;
+    top: 5px;
+    left: 277px;
+    font-size: 10px;
+}
+
+.CreateProduct .hidden {
+    visibility: hidden;
+}

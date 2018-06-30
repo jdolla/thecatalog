@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import Select from 'react-select';
-import 'react-select/dist/react-select.css';
 import './brandpicker.css';
+
+import Select from 'react-select';
 
 class BrandPicker extends Component{
 
     state = {
+        selectedOption: '',
         options: [],
     }
 
@@ -17,7 +18,7 @@ class BrandPicker extends Component{
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Cache': 'no-cache'
-              },
+            },
         }).then(data => {
             if (data.ok){
                 return data.json();
@@ -26,7 +27,7 @@ class BrandPicker extends Component{
             }
         }).then(data => {
             const options = data.map(option => {
-                return {value: option.name, label: option.name}
+                return {value: option.name, label: option.name};
             });
 
             this.setState({
@@ -36,24 +37,27 @@ class BrandPicker extends Component{
     }
 
     handleChange = (selectedOption) => {
-        this.props.selectedBrand = selectedOption;
+        this.setState({selectedOption},
+            this.props.changeBrand(selectedOption.value));
     }
 
     render() {
-        const { selectedOption } = this.props.selectedBrand;
+        const { selectedOption } = this.state;
+        const value = selectedOption && selectedOption.value;
 
         return (
-            <div className="BrandPicker-Box">
-                <Select
-                    name="brand"
-                    value={selectedOption}
-                    onChange={this.handleChange}
-                    options= {this.state.options}
+            <div>
+                <Select name = "form-field-name"
+                    value = {value}
+                    onChange = {this.handleChange}
+                    options = {this.state.options}
                 />
             </div>
         );
-      }
+    }
+
 }
 
 export default BrandPicker;
+
 

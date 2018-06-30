@@ -1,7 +1,5 @@
 'use strict';
 const mongoose = require('mongoose');
-const {productTypes} = require('../helpers/dictionaries');
-
 
 const ProductSchema = new mongoose.Schema({
     name: {
@@ -12,13 +10,6 @@ const ProductSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true,
-    },
-    type: {
-        type: String,
-        required: true,
-        validate: t => {
-            return productTypes.includes(t);
-        }
     }
 }, { timestamps: true });
 

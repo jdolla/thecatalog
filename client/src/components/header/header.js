@@ -18,7 +18,7 @@ class Header extends Component{
                     Goat Squirts Soap Co.
                 </div>
                 <div className="nav">
-                    <Link to="/">Home</Link>
+                    <Link to="/">Offers</Link>
                     <Link to="/users">Users</Link>
                     <a href="/" onClick={this.logoutClickHandler}>Logout</a>
                 </div>

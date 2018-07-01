@@ -37,8 +37,9 @@ class BrandPicker extends Component{
     }
 
     handleChange = (selectedOption) => {
-        this.setState({selectedOption},
-            this.props.changeBrand(selectedOption.value));
+        this.setState({
+            selectedOption: selectedOption || ""
+        }, this.props.changeBrand(selectedOption.value));
     }
 
     render() {

@@ -1,7 +1,16 @@
 'use strict';
 const mongoose = require('mongoose');
-const {roles, productTypes} = require('../helpers/dictionaries');
-const { ProductSchema } = require('./product');
+
+const SubProductSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
+    }
+});
 
 const OfferSchema = new mongoose.Schema({
     name: {
@@ -13,17 +22,13 @@ const OfferSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    products: ProductSchema,
+    product: SubProductSchema,
     brand: {
         type: String,
         require: true,
     },
     price: {
         type: Number,
-        required: true,
-    },
-    subscription: {
-        type: Boolean,
         required: true,
     },
     quantity: {

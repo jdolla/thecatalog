@@ -34,7 +34,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: #1f1e1e;
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -49,6 +49,7 @@
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
+    border-radius: 4px;
 }
 
 input:checked+.slider {
@@ -78,14 +79,14 @@ input:checked+.slider:before {
     overflow: hidden;
     display: inline-block;
     transition-property: all;
-    transition-duration: 1s;
+    transition-duration: .4s;
 }
 
 .po-offer {
     display: inline-block;
     overflow: hidden;
     transition-property: all;
-    transition-duration: 1s;
+    transition-duration: .4s;
 }
 
 .inactive {

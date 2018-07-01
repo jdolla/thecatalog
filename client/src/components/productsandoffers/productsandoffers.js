@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './productsandoffers.css';
 
 import ProductManagement from '../productmanagement/productmanagement';
+import OfferManagement from '../offermanagment/offermanagement';
 
 class ProductsAndOffers extends Component {
     state = {
@@ -40,6 +41,7 @@ class ProductsAndOffers extends Component {
                         <ProductManagement/>
                     </div>
                     <div className={"po-offer" + ((showOffer) ? " active" : " inactive")}>
+                        <OfferManagement/>
                     </div>
                 </div>
 

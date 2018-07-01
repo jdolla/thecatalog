@@ -17,5 +17,4 @@ ProductSchema.query.byName = function(name) {
     return this.where({name});
 }
 
-module.exports = mongoose.model('Product', ProductSchema),
-module.exports.ProductSchema = ProductSchema;
+module.exports = mongoose.model('Product', ProductSchema)

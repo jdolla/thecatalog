@@ -1,0 +1,4 @@
+.OfferManagement {
+    display: grid;
+    grid-template-columns: 1fr 35px auto;
+}

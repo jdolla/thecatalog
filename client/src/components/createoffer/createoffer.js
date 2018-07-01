@@ -25,6 +25,13 @@ class CreateOffer extends Component {
         this.getProducts();
     }
 
+    componentDidUpdate = () => {
+        if (this.props.newProduct){
+            this.getProducts();
+            this.props.toggleNewProduct(false);
+        }
+    }
+
     getBrands = () => {
         fetch('/api/brand', {
             method: 'GET',

@@ -24,7 +24,10 @@ class OfferManagement extends Component {
                 <div className="middle">
                 </div>
                 <div className="right">
-                    <CreateOffer refreshList={this.refreshList}/>
+                    <CreateOffer
+                        refreshList={this.refreshList}
+                        toggleNewProduct={this.props.toggleNewProduct}
+                        newProduct={this.props.newProduct} />
                 </div>
             </div>
         )

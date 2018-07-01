@@ -6,12 +6,19 @@ import OfferManagement from '../offermanagment/offermanagement';
 
 class ProductsAndOffers extends Component {
     state = {
-        showOffer: false
+        showOffer: false,
+        newProduct: false,
     }
 
     handleSwitch = (event) => {
         this.setState({
             showOffer: event.target.checked,
+        });
+    }
+
+    toggleNewProduct = (toggleState) => {
+        this.setState({
+            newProduct: toggleState,
         });
     }
 
@@ -38,10 +45,10 @@ class ProductsAndOffers extends Component {
                 </div>
                 <div className="po-wrapper">
                     <div className={"po-product" + ((showOffer) ? " inactive" : " active")}>
-                        <ProductManagement/>
+                        <ProductManagement toggleNewProduct={this.toggleNewProduct}/>
                     </div>
                     <div className={"po-offer" + ((showOffer) ? " active" : " inactive")}>
-                        <OfferManagement/>
+                        <OfferManagement newProduct={this.state.newProduct} toggleNewProduct={this.toggleNewProduct}/>
                     </div>
                 </div>
 

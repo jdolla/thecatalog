@@ -12,7 +12,7 @@ class ProductManagement extends Component {
     refreshList = () => {
         this.setState({
             refresh: !this.state.refresh,
-        })
+        }, this.props.toggleNewProduct(true))
     }
 
     render() {

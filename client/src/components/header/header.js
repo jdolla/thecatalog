@@ -15,7 +15,6 @@ class Header extends Component{
             <div className="Header">
                 <div className="header-logobox">
                 </div>
-                <img src={logo} alt='Goat'/>
                 <div className="title">
                     Goat Squirts Soap Co.
                 </div>

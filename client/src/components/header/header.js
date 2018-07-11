@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './header.css';
+import logo from './thecatalog/client/public/goat.png'
 
 
 class Header extends Component{
@@ -12,6 +13,7 @@ class Header extends Component{
     render(){
         return(
             <div className="Header">
+                <img src={logo} alt='Goat'/>
                 <div className="header-logobox">
                 </div>
                 <div className="title">

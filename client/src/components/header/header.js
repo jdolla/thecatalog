@@ -13,9 +13,9 @@ class Header extends Component{
     render(){
         return(
             <div className="Header">
-                <img src={logo} alt='Goat'/>
                 <div className="header-logobox">
                 </div>
+                <img src={logo} alt='Goat'/>
                 <div className="title">
                     Goat Squirts Soap Co.
                 </div>

@@ -40,7 +40,7 @@ class ProductsAndOffers extends Component {
                         </label>
                     </div>
                     <div className="right">
-                        Offer Mangaement
+                        Offer Management
                     </div>
                 </div>
                 <div className="po-wrapper">

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './header.css';
-import logo from './thecatalog/client/public/goat.png'
 
 
 class Header extends Component{

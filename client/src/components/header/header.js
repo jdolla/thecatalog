@@ -13,9 +13,10 @@ class Header extends Component{
         return(
             <div className="Header">
                 <div className="header-logobox">
+                    <img className="logo" src="./goat.png" alt="logo"/>
                 </div>
                 <div className="title">
-                    Goat Squirts Soap Co.
+                    <img className="name" src="./images/logo.png" alt="name"/>
                 </div>
                 <div className="nav">
                     <Link to="/">Catalog</Link>

@@ -13,7 +13,7 @@ class Header extends Component{
         return(
             <div className="Header">
                 <div className="header-logobox">
-                    <img className="logo" src="./goat.png" alt="logo"/>
+                    <img href="https://thecatalog.herokuapp.com/" className="logo" src="./goat.png" alt="logo"/>
                 </div>
                 <div className="title">
                     <img className="name" src="./images/logo.png" alt="name"/>

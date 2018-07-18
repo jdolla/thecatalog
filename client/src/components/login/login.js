@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './login.css';
+const tc = require("./tc.png");
+const fgs = require("./fgs.png");
+const tbg = require("./tbg.png")
 
 class Login extends Component{
     state = {
@@ -57,6 +60,7 @@ class Login extends Component{
     render() {
         const shake = this.state.shake;
         return (
+            <div>
             <div className={(shake) ? 'Login shake' : 'Login'}
                 onAnimationEnd={() => this.setState({shake: false})} >
 
@@ -89,6 +93,13 @@ class Login extends Component{
                         </div>
                     </div>
                 </form>
+                <br/>
+            </div>
+                <div className="login-logos">
+                    <img src={tc} alt=""/>
+                    <img src={fgs} alt=""/>
+                    <img src={tbg} alt=""/>
+                </div>
             </div>
         )
     }

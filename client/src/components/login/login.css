@@ -80,6 +80,16 @@
     max-width: 500px;
 }
 
+.login-logos {
+    margin: 50px auto;
+    max-width: 870px;
+}
+
+.login-logos>img {
+    max-width: 200px;
+    margin: 0 45px;
+}
+
 .shake {
     /* Start the shake animation and make the animation last for 0.5 seconds */
     animation: shake 0.5s;

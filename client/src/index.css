@@ -3,3 +3,24 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 50px;
+  justify-content: center;
+}
+
+.column img {
+  margin-top: 8px;
+  vertical-align: middle;
+}
+
+img {
+  width:200px;
+  height:120px;
+}
+
+.tc, .fgs, tbg {
+  padding: 20px;
+}
